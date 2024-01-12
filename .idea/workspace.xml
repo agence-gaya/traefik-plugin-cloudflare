@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b8995834-5692-4a5d-ae72-99f3e9223185" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/test.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.traefik.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloudflare.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cloudflare_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/time.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ip_checker.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/bypass.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/bypasssafe.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/common.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/doc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/dump.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/format.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/davecgh/go-spew/spew/spew.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/pmezard/go-difflib/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/pmezard/go-difflib/difflib/difflib.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_compare.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_compare_can_convert.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_compare_legacy.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_format.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_format.go.tmpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_forward.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_forward.go.tmpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertion_order.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/assertions.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/doc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/errors.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/forward_assertions.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/assert/http_assertions.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/doc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/forward_requirements.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/require.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/require.go.tmpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/require_forward.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/require_forward.go.tmpl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/github.com/stretchr/testify/require/requirements.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/NOTICE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/apic.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/decode.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/emitterc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/encode.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/parserc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/readerc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/resolve.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/scannerc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/sorter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/writerc.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/yaml.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/yamlh.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/gopkg.in/yaml.v3/yamlprivateh.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vendor/modules.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="safe" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Update build badge" />
+        <option name="rewordedMessage" value="Rename plugin agence-gaya/traefik-plugin-cloudflare" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="429075861a2433ea6f7c2723a626ac9ab80159ed" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/bin/php" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2ar9umYytCITI77EVBk0eDONNzF" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/jliebert/Projets/gaya-docker-traefik-certbot",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.settingsdialog.textmate.bundles",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pkg/logger" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-php-predefined-ba97393d7c68-b4dcf6bb9de9-com.jetbrains.php.sharedIndexes-PS-233.13135.108" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b8995834-5692-4a5d-ae72-99f3e9223185" name="Changes" comment="" />
+      <created>1705066056181</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705066056181</updated>
+      <workItem from="1705066057289" duration="1887000" />
+      <workItem from="1705067957568" duration="28226000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
