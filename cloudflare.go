@@ -22,6 +22,7 @@ type Config struct {
 	AllowedCIDRs           []string `json:"allowedCIDRs,omitempty"`
 	RefreshInterval        string   `json:"refreshInterval,omitempty"`
 	OverwriteRequestHeader bool     `json:"overwriteRequestHeader,omitempty"`
+	AppendXForwardedFor     bool     `json:"appendXForwardedFor,omitempty"`
 	Debug                  bool     `json:"debug,omitempty"`
 }
 
@@ -31,6 +32,7 @@ func CreateConfig() *Config {
 		AllowedCIDRs:			nil,
 		RefreshInterval:        defaultRefresh,
 		OverwriteRequestHeader: true,
+		AppendXForwardedFor:    false,
 		Debug:                  false,
 	}
 }
@@ -41,6 +43,7 @@ type Cloudflare struct {
 	trustedChecker         ipChecker
 	allowedChecker         ipChecker
 	overwriteRequestHeader bool
+	appendXForwardedFor    bool
 	debug                  bool
 }
 
@@ -58,6 +61,7 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 		next:                   next,
 		name:                   name,
 		overwriteRequestHeader: config.OverwriteRequestHeader,
+		appendXForwardedFor:    config.AppendXForwardedFor,
 		debug:                  config.Debug,
 	}
 
@@ -187,7 +191,7 @@ func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if c.overwriteRequestHeader && trusted {
-		err = overwriteRequestHeader(r)
+		err = overwriteRequestHeader(r, c.appendXForwardedFor)
 		if err != nil {
 			if c.debug {
 				log.Println(fmt.Errorf("debug: %w", err))
@@ -201,7 +205,7 @@ func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c.next.ServeHTTP(w, r)
 }
 
-func overwriteRequestHeader(r *http.Request) error {
+func overwriteRequestHeader(r *http.Request, appendXForwardedFor bool) error {
 	ip := r.Header.Get("CF-Connecting-IP")
 	if ip == "" {
 		return errors.New("missing CF-Connecting-IP header")
@@ -216,12 +220,16 @@ func overwriteRequestHeader(r *http.Request) error {
 	}
 
 	ipList := XForwardedIpValues(r)
-    if len(ipList) == 0 {
-  		r.RemoteAddr = ip
-  		ipList = append(ipList, ip)
-    } else {
-    	ipList[0] = ip
-    }
+	if appendXForwardedFor {
+		ipList = append([]string{ip}, ipList...)
+	} else {
+		if len(ipList) == 0 {
+			r.RemoteAddr = ip
+			ipList = []string{ip}
+		} else {
+			ipList[0] = ip
+		}
+	}
 
     r.Header.Set("X-Forwarded-For", strings.Join(ipList, ", "))
 	r.Header.Set("X-Real-Ip", ip)

@@ -428,6 +428,72 @@ func TestCloudflare(t *testing.T) {
 		})
 	})
 
+	t.Run("overwrite header request with append xff", func(t *testing.T) {
+		cfg := cloudflare.CreateConfig()
+		cfg.TrustedCIDRs = []string{"0.0.0.0/0"}
+		cfg.OverwriteRequestHeader = true
+		cfg.AppendXForwardedFor = true
+		cfg.Debug = true
+
+		ctx := context.Background()
+		next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+
+		handler, err := cloudflare.New(ctx, next, cfg, "cloudflare")
+		require.NoError(t, err)
+
+		t.Run("valid", func(t *testing.T) {
+			req := &http.Request{
+				RemoteAddr: "172.16.1.1:42",
+				Header: makeHeaders(map[string]string{
+					"CF-Connecting-IP": "1.2.3.4",
+					"CF-Visitor": "{\"scheme\":\"https\"}",
+				}),
+			}
+
+			rr := httptest.NewRecorder()
+			handler.ServeHTTP(rr, req)
+
+			xff := strings.Join(req.Header.Values("X-Forwarded-For"), ",")
+			require.Equal(t, "1.2.3.4", xff)
+
+			xri := strings.Join(req.Header.Values("X-Real-Ip"), ",")
+			require.Equal(t, "1.2.3.4", xri)
+
+			xfp := strings.Join(req.Header.Values("X-Forwarded-Proto"), ",")
+			require.Equal(t, "https", xfp)
+
+			res := rr.Result()
+			require.Equal(t, http.StatusOK, res.StatusCode)
+		})
+
+		t.Run("overwrite", func(t *testing.T) {
+			req := &http.Request{
+				RemoteAddr: "172.16.1.1:42",
+				Header: makeHeaders(map[string]string{
+					"CF-Connecting-IP": "1.2.3.4",
+					"CF-Visitor": "{\"scheme\":\"https\"}",
+					"X-Forwarded-For": "1.1.1.1, 2.2.2.2",
+					"X-Real-Ip": "172.16.1.1",
+				}),
+			}
+
+			rr := httptest.NewRecorder()
+			handler.ServeHTTP(rr, req)
+
+			xff := strings.Join(req.Header.Values("X-Forwarded-For"), ",")
+			require.Equal(t, "1.2.3.4, 1.1.1.1, 2.2.2.2", xff)
+
+			xri := strings.Join(req.Header.Values("X-Real-Ip"), ",")
+			require.Equal(t, "1.2.3.4", xri)
+
+			xfp := strings.Join(req.Header.Values("X-Forwarded-Proto"), ",")
+			require.Equal(t, "https", xfp)
+
+			res := rr.Result()
+			require.Equal(t, http.StatusOK, res.StatusCode)
+		})
+	})
+
 	t.Run("no overwrite header request", func(t *testing.T) {
 		cfg := cloudflare.CreateConfig()
         cfg.TrustedCIDRs = []string{"0.0.0.0/0"}

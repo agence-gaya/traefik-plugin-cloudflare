@@ -19,13 +19,14 @@ Traefik plugin to handle traffic coming from Cloudflare.
 
 ### Plugin options
 
-|           Key            | Type            | Default |                                                                        Description                                                                        |
-|:------------------------:|:---------------:|:-------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|      `trustedCIDRs`      | `[]string`      |  `[]`   |      Requests coming from a source not matching any of these CIDRs will be terminated with a 403. If empty, it is populated with Cloudflare's CIDRs.      |
-|      `allowedCIDRs`      | `[]string`      |  `[]`   |          Requests coming from a source matching any of these CIDRs will not be terminated with a 403 and no overwrite of request header append.           |
-|    `refreshInterval`     | `time.Duration` |  `24h`  |         When `trustedCIDRs` is empty, Cloudflare's CIDRs will be refreshed after this duration. Using a value of 0 seconds disables the refresh.          |
-| `overwriteRequestHeader` | `bool`          | `true`  | When `true`, the request's header are rewrite. When `false` any header or traefik RemoteAddress are modified, filter only the request from Cloudflare IP. |
-|         `debug`          | `bool`          | `false` |                                                           Output debug message in traefik log.                                                            |
+|           Key            | Type            | Default  |                                                                        Description                                                                        |
+|:------------------------:|:---------------:|:--------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|      `trustedCIDRs`      | `[]string`      |   `[]`   |      Requests coming from a source not matching any of these CIDRs will be terminated with a 403. If empty, it is populated with Cloudflare's CIDRs.      |
+|      `allowedCIDRs`      | `[]string`      |   `[]`   |          Requests coming from a source matching any of these CIDRs will not be terminated with a 403 and no overwrite of request header append.           |
+|    `refreshInterval`     | `time.Duration` |  `24h`   |         When `trustedCIDRs` is empty, Cloudflare's CIDRs will be refreshed after this duration. Using a value of 0 seconds disables the refresh.          |
+| `overwriteRequestHeader` | `bool`          |  `true`  | When `true`, the request's header are rewrite. When `false` any header or traefik RemoteAddress are modified, filter only the request from Cloudflare IP. |
+| `appendXForwardedFor`    | `bool`          |  `false` | Work only when `overwriteRequestHeader` `true`, When `true` prepend Cloudflare IP to XForwardedFor instead of replace XForwardedFor first value.  |
+|         `debug`          | `bool`          | `false`  |                                                           Output debug message in traefik log.                                                            |
 
 ### Traefik static configuration
 
