@@ -19,6 +19,7 @@ const (
 
 type Config struct {
 	TrustedCIDRs           []string `json:"trustedCIDRs,omitempty"`
+	AllowedCIDRs           []string `json:"allowedCIDRs,omitempty"`
 	RefreshInterval        string   `json:"refreshInterval,omitempty"`
 	OverwriteRequestHeader bool     `json:"overwriteRequestHeader,omitempty"`
 	Debug                  bool     `json:"debug,omitempty"`
@@ -27,6 +28,7 @@ type Config struct {
 func CreateConfig() *Config {
 	return &Config{
 		TrustedCIDRs:           nil,
+		AllowedCIDRs:			nil,
 		RefreshInterval:        defaultRefresh,
 		OverwriteRequestHeader: true,
 		Debug:                  false,
@@ -36,7 +38,8 @@ func CreateConfig() *Config {
 type Cloudflare struct {
 	next                   http.Handler
 	name                   string
-	checker                ipChecker
+	trustedChecker         ipChecker
+	allowedChecker         ipChecker
 	overwriteRequestHeader bool
 	debug                  bool
 }
@@ -64,13 +67,13 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 		for _, c := range config.TrustedCIDRs {
 			_, cidr, err := net.ParseCIDR(c)
 			if err != nil {
-				return nil, fmt.Errorf("invalid CIDR: %w", err)
+				return nil, fmt.Errorf("invalid trusted CIDR: %w", err)
 			}
 
 			cidrs = append(cidrs, cidr)
 		}
 
-		c.checker = &staticIPChecker{
+		c.trustedChecker = &staticIPChecker{
 			Cidrs: cidrs,
 		}
 	} else {
@@ -95,7 +98,22 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 			return nil, fmt.Errorf("failed to refresh Cloudflare IPs: %w", err)
 		}
 
-		c.checker = checker
+		c.trustedChecker = checker
+	}
+
+	allowedCidrs := make([]*net.IPNet, 0, len(config.AllowedCIDRs))
+
+	for _, c := range config.AllowedCIDRs {
+		_, cidr, err := net.ParseCIDR(c)
+		if err != nil {
+			return nil, fmt.Errorf("invalid allowed CIDR: %w", err)
+		}
+
+		allowedCidrs = append(allowedCidrs, cidr)
+	}
+
+	c.allowedChecker = &staticIPChecker{
+		Cidrs: allowedCidrs,
 	}
 
 	return c, nil
@@ -127,7 +145,8 @@ func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-   	allow := false
+   	trusted := false
+   	allowed := false
 
    	for i := 0; i < len(ipList); i++ {
    		sip := net.ParseIP(ipList[i])
@@ -140,7 +159,7 @@ func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		allowIp, err := c.checker.CheckIP(r.Context(), sip)
+		trustIp, err := c.trustedChecker.CheckIP(r.Context(), sip)
 		if err != nil {
 			if c.debug {
 				log.Println(fmt.Errorf("debug: %w", err))
@@ -150,13 +169,24 @@ func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if allowIp {
-			allow = true
-			break
+		if trustIp {
+			trusted = true
+			allowed = true
+           	break
+        }
+
+		allowIp, err := c.allowedChecker.CheckIP(r.Context(), sip)
+		if err != nil && c.debug {
+			log.Println(fmt.Errorf("debug: %w", err))
 		}
+
+		if allowIp {
+        	allowed = true
+        	break
+        }
 	}
 
-	if !allow {
+	if !allowed {
 		if c.debug {
 			log.Println(fmt.Sprintf("debug: deny request from: %s", strings.Join(ipList, ",")))
 		}
@@ -165,7 +195,7 @@ func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if c.overwriteRequestHeader {
+	if c.overwriteRequestHeader && trusted {
 		err = overwriteRequestHeader(r)
 		if err != nil {
 			if c.debug {
