@@ -385,7 +385,7 @@ func TestCloudflare(t *testing.T) {
 				Header: makeHeaders(map[string]string{
 					"CF-Connecting-IP": "1.2.3.4",
 					"CF-Visitor": "{\"scheme\":\"https\"}",
-					"X-Forwarded-For": "2.2.2.2, 3.3.3.3",
+					"X-Forwarded-For": "1.1.1.1, 2.2.2.2",
 					"X-Real-Ip": "172.16.1.1",
 				}),
 			}
@@ -394,7 +394,7 @@ func TestCloudflare(t *testing.T) {
 			handler.ServeHTTP(rr, req)
 
 			xff := strings.Join(req.Header.Values("X-Forwarded-For"), ",")
-			require.Equal(t, "1.2.3.4, 2.2.2.2, 3.3.3.3", xff)
+			require.Equal(t, "1.2.3.4, 2.2.2.2", xff)
 
 			xri := strings.Join(req.Header.Values("X-Real-Ip"), ",")
             require.Equal(t, "1.2.3.4", xri)

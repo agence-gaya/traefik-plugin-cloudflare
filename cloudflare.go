@@ -120,17 +120,8 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 }
 
 func (c *Cloudflare) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var ipList []string
 
-	xff := r.Header.Get("X-Forwarded-For")
-	xffs := strings.Split(xff, ",")
-
-	for i := len(xffs) - 1; i >= 0; i-- {
-		xffsTrim := strings.TrimSpace(xffs[i])
-		if len(xffsTrim) > 0 {
-			ipList = append(ipList, xffsTrim)
-		}
-	}
+	ipList := XForwardedIpValues(r)
 
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
@@ -216,9 +207,6 @@ func overwriteRequestHeader(r *http.Request) error {
 		return errors.New("missing CF-Connecting-IP header")
 	}
 
-	// Permit to ipwhitelist middleware to match cloudflare client ip
-	r.RemoteAddr = ip
-
 	if r.Header.Get("CF-Visitor") != "" {
     	var cfVisitorValue CFVisitorHeader
     	err := json.Unmarshal([]byte(r.Header.Get("CF-Visitor")), &cfVisitorValue);
@@ -227,14 +215,32 @@ func overwriteRequestHeader(r *http.Request) error {
     	}
 	}
 
-	xff := r.Header.Get("X-Forwarded-For")
-	if xff != "" {
-		r.Header.Set("X-Forwarded-For", ip + ", " + xff)
-	} else {
-		r.Header.Set("X-Forwarded-For", ip)
-	}
+	ipList := XForwardedIpValues(r)
+    if len(ipList) == 0 {
+  		r.RemoteAddr = ip
+  		ipList = append(ipList, ip)
+    } else {
+    	ipList[0] = ip
+    }
 
+    r.Header.Set("X-Forwarded-For", strings.Join(ipList, ", "))
 	r.Header.Set("X-Real-Ip", ip)
 
 	return nil
+}
+
+func XForwardedIpValues(r *http.Request) []string {
+	var list []string
+
+	xff := r.Header.Get("X-Forwarded-For")
+   	xffs := strings.Split(xff, ",")
+
+   	for i := 0; i < len(xffs); i++ {
+   		xffsTrim := strings.TrimSpace(xffs[i])
+   		if len(xffsTrim) > 0 {
+   			list = append(list, xffsTrim)
+    	}
+    }
+
+    return list
 }
